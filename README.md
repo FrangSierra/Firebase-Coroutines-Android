@@ -27,6 +27,8 @@ Extension functions:
 | [DocumentReference.snapshotChangesChannel] | Returns a `Channel` with unlimited capacity that will send a new message every time that there is a change on the current reference
 
 ### Firebase Authentication
+
+| **Name** | **Description**
 | -------- | ---------------
 | [FirebaseAuth.authStateChannel] | Returns a `Channel` with conflated capacity that will send a new message every time that there is a change on the authentication user over the current `FirebaseAuth` instance
 | [FirebaseAuth.idTokenChannel] | Returns a `Channel` with conflated capacity that will send a new message every time that there is a change on the authentication id token over the current `FirebaseAuth` instance
@@ -34,6 +36,7 @@ Extension functions:
 | [FirebaseUser.updateProfile] | Helper method to simplify working with `FirebaseUser.updateProfile` during a `FirebaseUser` update
 
 ### Firebase Storage
+
 | **Name** | **Description**
 | -------- | ---------------
 | [StorageReference.updateMetadata] | Helper method to simplify working with `StorageMetadata.Builder` during a `StorageMetadata` update
