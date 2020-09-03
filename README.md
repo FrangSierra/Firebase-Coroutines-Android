@@ -26,6 +26,32 @@ Extension functions:
 | [DocumentReference.deleteBlocking] | Awaits for the current reference to be deleted
 | [DocumentReference.snapshotChangesChannel] | Returns a `Channel` with unlimited capacity that will send a new message every time that there is a change on the current reference
 
+## Flow Utilities
+This library includes extensions to provide compatibility with `flow` while using Firestore snapshot listeners. The extensions are ready to take into account
+the possibility of offline and cached data, together with the casting from Firebase model to application models. Example:
+```kotlin
+scope.launch {
+             firestore.collection("example")
+                 .snapshotChangesFlow(
+                     skipFirstCacheHit = ConnectivityUtils.hasInternetConnection(context),
+                     documentMapping = { documentSnapshot -> documentSnapshot.toObject(FirebaseModel::class.java) },
+                     mappingFn = { firebaseModel, id -> Model(id= id, data = firebaseModel) })
+                 .catch { manageError(it) }
+                 .collect { event ->
+                     when (event) {
+                         is SnapshotListenerEvent.FirestoreDocumentChanges -> {
+                             //manage event based on type(modified, deleted, added)
+                         }
+                         is SnapshotListenerEvent.IsEmpty -> {
+                             //Empty result
+                         }
+                         is SnapshotListenerEvent.HasNotPendingWrites -> {
+                             //Data updated from offline mode and after connect to internet there is no needed changes
+                         }
+                     }
+                 }
+         }
+```
 ### Firebase Authentication
 
 | **Name** | **Description**
